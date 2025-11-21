@@ -3,7 +3,7 @@
 
   // Configuration
   const CONFIG = {
-    apiEndpoint: "https://yourapi.com/api/submissions",
+    apiEndpoint: "http://localhost:4000/api/dsar_case",
     containerId: "embeddable-form-container",
   };
 
@@ -395,12 +395,11 @@
     // Get form data
     const formData = new FormData(form);
     const data = {
-      fullName: formData.get("fullName"),
-      email: formData.get("email"),
-      requestType: formData.get("requestType"),
-      details: formData.get("details"),
-      submittedFrom: window.location.href,
-      timestamp: new Date().toISOString(),
+      requester_name: formData.get("fullName"),
+      contact_email: formData.get("email"),
+      type: formData.get("requestType"),
+      additional_info: formData.get("details"),
+      organization_id: "2edfbff6-8533-4ae8-bce7-6997eef43c99",
     };
 
     // Disable button
@@ -413,17 +412,18 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-API-Key": apiKey,
         },
         body: JSON.stringify(data),
       });
+
+      console.log(response);
 
       if (response.ok) {
         showMessage(
           "Thank you! Your data request has been submitted successfully. We will contact you shortly to verify your identity and process your request.",
           "success"
         );
-        form.reset();
+        // form.reset();
 
         // Remove selected state from radio buttons
         const radioOptions = document.querySelectorAll(".radio-option");
