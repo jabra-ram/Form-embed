@@ -4,21 +4,20 @@
   // Configuration
   const CONFIG = {
     apiEndpoint: "http://localhost:4000/api/dsar_case",
-    containerId: "embeddable-form-container",
+    containerId: "dsar-form-container",
   };
 
   // Get API key from script tag data attribute
   const scriptTag = document.currentScript;
-  const apiKey = scriptTag?.getAttribute("data-api-key") || "";
+  const token = scriptTag?.getAttribute("data-token") || "";
   const theme = scriptTag?.getAttribute("data-theme") || "light";
 
   // CSS Styles
   const styles = `
     .embeddable-form-wrapper {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      max-width: 650px;
+      max-width: 700px;
       margin: 0 auto;
-      padding: 20px;
       box-sizing: border-box;
     }
 
@@ -29,7 +28,7 @@
     .embeddable-form {
       background: ${theme === "dark" ? "#1e1e1e" : "#ffffff"};
       border-radius: 8px;
-      padding: 40px;
+      padding: 20px 40px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     }
 
@@ -62,7 +61,7 @@
       font-size: 18px;
       font-weight: 600;
       color: ${theme === "dark" ? "#fff" : "#1a1a1a"};
-      margin: 0 0 20px 0;
+      margin: 0 0 10px 0;
       padding-bottom: 10px;
       border-bottom: 2px solid ${theme === "dark" ? "#333" : "#e5e5e5"};
     }
@@ -237,16 +236,11 @@
     }
   `;
 
-  // HTML Template
   const formHTML = `
     <div class="embeddable-form-wrapper">
       <div class="embeddable-form">
         <div class="form-header">
-          <svg class="form-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #0891b2;">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          <h1>Data Request Submission</h1>
-          <p class="form-subtitle">Submit a Data Subject Access Request (DSAR) to our organization.</p>
+          <h2>Data Subject Access Request (DSAR) Submission</h2>
         </div>
 
         <form id="embeddable-form-element">
@@ -318,23 +312,22 @@
             </label>
           </div>
 
-          <h2 class="form-section-title" style="margin-top: 30px;">Specific Details</h2>
+          <h2 class="form-section-title" style="margin-top: 20px;">Specific Details</h2>
 
           <div class="form-group">
-            <label class="form-label" for="ef-details">Please provide details about your request (Required)</label>
+            <label class="form-label" for="ef-details">Please provide details about your request</label>
             <textarea
               id="ef-details"
               name="details"
               class="form-textarea"
               placeholder="Explain your request clearly. E.g., I would like to correct the date of birth associated with my account."
-              required
             ></textarea>
             <p class="form-helper">The more detail you provide, the faster we can process your request.</p>
           </div>
 
           <button type="submit" class="form-button">Submit Request</button>
 
-          <p class="form-footer">Final fulfillment is subject to mandatory **identity verification** and legal review.</p>
+          <p class="form-footer">Final fulfillment is subject to mandatory <span style="font-weight: bold;">identity verification</span> and legal review.</p>
 
           <div id="form-message" class="form-message" style="display: none;"></div>
         </form>
@@ -361,7 +354,7 @@
     container.innerHTML = formHTML;
 
     // Attach form handler
-    const form = document.getElementById("embeddable-form-element");
+    const form = document.getElementById("dsar-form-container");
     form.addEventListener("submit", handleSubmit);
 
     // Add radio button click handlers for visual feedback
@@ -399,8 +392,20 @@
       contact_email: formData.get("email"),
       type: formData.get("requestType"),
       additional_info: formData.get("details"),
-      organization_id: "2edfbff6-8533-4ae8-bce7-6997eef43c99",
     };
+
+    if (data.type === "correction" && data.additional_info.trim() === "") {
+      showMessage(
+        "Providing details is mandatory for data correction requests.",
+        "error"
+      );
+      return;
+    }
+
+    if (!token) {
+      showMessage("Missing token", "error");
+      return;
+    }
 
     // Disable button
     button.disabled = true;
@@ -412,24 +417,23 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "X-Widget-Token": token,
         },
         body: JSON.stringify(data),
       });
-
-      console.log(response);
+      const result = await response.json();
+      console.log(result);
 
       if (response.ok) {
         showMessage(
           "Thank you! Your data request has been submitted successfully. We will contact you shortly to verify your identity and process your request.",
           "success"
         );
-        // form.reset();
 
-        // Remove selected state from radio buttons
         const radioOptions = document.querySelectorAll(".radio-option");
         radioOptions.forEach((opt) => opt.classList.remove("selected"));
       } else {
-        throw new Error("Submission failed");
+        showMessage(result.message || "Something went wrong.", "error");
       }
     } catch (error) {
       console.error("Form submission error:", error);
