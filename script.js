@@ -426,7 +426,7 @@
 
       if (response.ok) {
         showMessage(
-          "Thank you! Your data request has been submitted successfully. We will contact you shortly to verify your identity and process your request.",
+          `Thank you for submitting your request. We have successfully logged your case.\nYour Request ID will be sent to ${data.contact_email} shortly. Please note that all further communication regarding your request will be sent to this email.`,
           "success"
         );
 
@@ -460,7 +460,7 @@
 
       setTimeout(() => {
         messageDiv.style.display = "none";
-      }, 8000);
+      }, 20000);
     }
   }
 
