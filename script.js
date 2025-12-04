@@ -1,16 +1,17 @@
 (function () {
   "use strict";
 
-  // Configuration
-  const CONFIG = {
-    apiEndpoint: "http://localhost:4000/api/dsar_case",
-    containerId: "dsar-form-container",
-  };
-
   // Get API key from script tag data attribute
   const scriptTag = document.currentScript;
   const token = scriptTag?.getAttribute("data-token") || "";
   const theme = scriptTag?.getAttribute("data-theme") || "light";
+  const settingsId = scriptTag?.getAttribute("data-settings-id");
+
+  // Configuration
+  const CONFIG = {
+    apiEndpoint: `http://localhost:4000/api/dsar_case/${settingsId}`,
+    containerId: "dsar-form-container",
+  };
 
   // CSS Styles
   const styles = `
