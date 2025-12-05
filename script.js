@@ -9,7 +9,7 @@
 
   // Configuration
   const CONFIG = {
-    apiEndpoint: `http://localhost:4000/api/dsar_case/${settingsId}`,
+    apiEndpoint: `https://staging.kawach.ai/api/dsar_case/${settingsId}`,
     containerId: "dsar-form-container",
   };
 
