@@ -226,6 +226,17 @@
       border: 1px solid ${theme === "dark" ? "#991b1b" : "#fecaca"};
     }
 
+    .success-title,
+    .error-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .form-message p {
+      margin: 6px 0;
+    }
+
     @media (max-width: 640px) {
       .embeddable-form {
         padding: 30px 20px;
@@ -313,7 +324,7 @@
             </label>
           </div>
 
-          <h2 class="form-section-title" style="margin-top: 20px;">Specific Details</h2>
+          <h2 class="form-section-title" style="margin-top: 20px;">Specific Details <span id="details-required" style="display:none;"> (Required)</span> </h2>
 
           <div class="form-group">
             <label class="form-label" for="ef-details">Please provide details about your request</label>
@@ -373,6 +384,7 @@
         radioOptions.forEach((opt) => opt.classList.remove("selected"));
         if (this.checked) {
           option.classList.add("selected");
+          toggleDetailsRequirement(this.value);
         }
       });
     });
@@ -426,10 +438,7 @@
       console.log("result:  ", result);
 
       if (response.ok) {
-        showMessage(
-          `Thank you for submitting your request. We have successfully logged your case.\nYour Request ID will be sent to ${data.contact_email} shortly. Please note that all further communication regarding your request will be sent to this email.`,
-          "success"
-        );
+        showMessage("", "success", data.contact_email);
 
         const radioOptions = document.querySelectorAll(".radio-option");
         radioOptions.forEach((opt) => opt.classList.remove("selected"));
@@ -448,21 +457,48 @@
     }
   }
 
-  // Show message
-  function showMessage(text, type) {
+  function toggleDetailsRequirement(type) {
+    const textarea = document.getElementById("ef-details");
+    const requiredLabel = document.getElementById("details-required");
+
+    if (type === "correction") {
+      textarea.setAttribute("required", "required");
+      requiredLabel.style.display = "inline";
+    } else {
+      textarea.removeAttribute("required");
+      requiredLabel.style.display = "none";
+    }
+  }
+
+  // Show success/error message
+  function showMessage(text, type, email = "") {
     const messageDiv = document.getElementById("form-message");
-    messageDiv.textContent = text;
+
     messageDiv.className = `form-message ${type}`;
-    messageDiv.style.display = "block";
 
     if (type === "success") {
-      // Scroll to message
-      messageDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-
-      setTimeout(() => {
-        messageDiv.style.display = "none";
-      }, 20000);
+      messageDiv.innerHTML = `
+      <div class="success-title">Request Received</div>
+      <p>
+        Thank you for submitting your request. We have successfully logged your case.
+      </p>
+      <p>
+        Your <strong>Request ID</strong> will be sent to
+        <em>${email}</em> shortly. Please note that
+        <strong>all further communication</strong> regarding your request
+        will be sent to this email.
+      </p>
+    `;
+    } else {
+      messageDiv.innerHTML = `<p>${text}</p>`;
     }
+
+    messageDiv.style.display = "block";
+    messageDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    setTimeout(() => {
+      messageDiv.style.display = "none";
+    }, 20000);
   }
 
   // Run when DOM is ready
