@@ -29,33 +29,13 @@
     .embeddable-form {
       background: ${theme === "dark" ? "#1e1e1e" : "#ffffff"};
       border-radius: 8px;
-      padding: 20px 40px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 15px 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
     .form-header {
       text-align: center;
       margin-bottom: 10px;
-    }
-
-    .form-icon {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 10px;
-    }
-
-    .embeddable-form h1 {
-      margin: 0 0 8px 0;
-      color: ${theme === "dark" ? "#fff" : "#1a1a1a"};
-      font-size: 28px;
-      font-weight: 600;
-    }
-
-    .form-subtitle {
-      color: ${theme === "dark" ? "#aaa" : "#666"};
-      font-size: 15px;
-      margin: 0 0 30px 0;
-      line-height: 1.5;
     }
 
     .form-section-title {
@@ -75,17 +55,17 @@
       display: block;
       margin-bottom: 8px;
       color: ${theme === "dark" ? "#ddd" : "#333"};
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 400;
     }
 
     .form-input,
     .form-textarea {
       width: 100%;
-      padding: 12px 14px;
+      padding: 10px 12px;
       border: 1px solid ${theme === "dark" ? "#444" : "#d1d5db"};
       border-radius: 6px;
-      font-size: 14px;
+      font-size: 12px;
       background: ${theme === "dark" ? "#2a2a2a" : "#ffffff"};
       color: ${theme === "dark" ? "#fff" : "#1a1a1a"};
       transition: all 0.2s;
@@ -113,7 +93,7 @@
     }
 
     .form-helper {
-      font-size: 13px;
+      font-size: 11px;
       color: ${theme === "dark" ? "#888" : "#6b7280"};
       margin-top: 6px;
       line-height: 1.4;
@@ -129,7 +109,7 @@
     .radio-option {
       display: flex;
       align-items: flex-start;
-      padding: 16px;
+      padding: 12px;
       border: 1px solid ${theme === "dark" ? "#444" : "#e5e7eb"};
       border-radius: 8px;
       cursor: pointer;
@@ -164,24 +144,24 @@
     .radio-title {
       font-weight: 500;
       color: ${theme === "dark" ? "#fff" : "#1a1a1a"};
-      font-size: 15px;
+      font-size: 12px;
       margin-bottom: 4px;
     }
 
     .radio-description {
-      font-size: 13px;
+      font-size: 11px;
       color: ${theme === "dark" ? "#aaa" : "#6b7280"};
       line-height: 1.4;
     }
 
     .form-button {
       width: 100%;
-      padding: 14px;
-      background: ${theme === "dark" ? "#0e7490" : "#0891b2"};
+      padding: 12px;
+      background: ${theme === "dark" ? "#0092b8" : "#155265"};
       color: white;
       border: none;
       border-radius: 6px;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: background 0.2s;
@@ -189,7 +169,7 @@
     }
 
     .form-button:hover {
-      background: ${theme === "dark" ? "#0d7490" : "#0e7490"};
+      background: ${theme === "dark" ? "#007595" : "#005f78"};
     }
 
     .form-button:disabled {
@@ -241,10 +221,6 @@
       .embeddable-form {
         padding: 30px 20px;
       }
-
-      .embeddable-form h1 {
-        font-size: 24px;
-      }
     }
   `;
 
@@ -294,7 +270,7 @@
                 required
               />
               <div class="radio-content">
-                <div class="radio-title">Data Access / Portability</div>
+                <div class="radio-title">Data Access</div>
                 <div class="radio-description">Request a copy of the personal data we hold about you.</div>
               </div>
             </label>
@@ -306,8 +282,8 @@
                 value="deletion"
               />
               <div class="radio-content">
-                <div class="radio-title">Data Deletion ("Right to be Forgotten")</div>
-                <div class="radio-description">Request that we delete the personal data we hold about you.</div>
+                <div class="radio-title">Data Erasure</div>
+                <div class="radio-description">Request that we erase the personal data we hold about you.</div>
               </div>
             </label>
 
