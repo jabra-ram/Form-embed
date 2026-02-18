@@ -333,7 +333,7 @@
     // Find or create container
     let container = document.getElementById(CONFIG.containerId);
     if (!container) {
-      console.warn("DSAR form container missing.");
+      console.warn("DSAR container not found");
       return;
     }
 
