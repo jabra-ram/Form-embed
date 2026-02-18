@@ -333,9 +333,8 @@
     // Find or create container
     let container = document.getElementById(CONFIG.containerId);
     if (!container) {
-      container = document.createElement("div");
-      container.id = CONFIG.containerId;
-      scriptTag.parentNode.insertBefore(container, scriptTag);
+      console.warn("DSAR form container missing.");
+      return;
     }
 
     // Inject HTML
@@ -386,7 +385,7 @@
     if (data.type === "correction" && data.additional_info.trim() === "") {
       showMessage(
         "Providing details is mandatory for data correction requests.",
-        "error"
+        "error",
       );
       return;
     }
@@ -425,7 +424,7 @@
       console.error("Form submission error:", error);
       showMessage(
         "Sorry, there was an error submitting your request. Please try again later or contact us directly.",
-        "error"
+        "error",
       );
     } finally {
       button.disabled = false;
